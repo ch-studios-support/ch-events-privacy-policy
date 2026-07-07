@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CH Events</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+           text-align: center; padding: 48px 24px; background: #000; color: #fff; }
+    h2 { margin: 0 0 8px; }
+    a.btn { display: inline-block; margin-top: 20px; padding: 12px 22px;
+            background: #e84c3d; color: #fff; text-decoration: none;
+            border-radius: 12px; font-weight: 700; }
+    p { color: #bbb; }
+  </style>
+</head>
+<body>
+  <h2>CH Events</h2>
+  <p>Event wird geöffnet …</p>
+  <a class="btn" id="open" href="#">In der App öffnen</a>
+  <script>
+    (function () {
+      var id = new URLSearchParams(location.search).get('id');
+      var privacy = 'https://ch-studios-support.github.io/ch-events-privacy-policy/';
+      if (!id) { location.replace(privacy); return; }
+      var appUrl = 'chevents://event/' + encodeURIComponent(id);
+      var store  = 'https://play.google.com/store/apps/details?id=ch.studios.events';
+      document.getElementById('open').href = appUrl;
+      // App via Custom-Scheme öffnen; wenn nicht installiert → nach 1.5s Store.
+      var t = setTimeout(function () { location.href = store; }, 1500);
+      window.addEventListener('pagehide', function () { clearTimeout(t); });
+      location.href = appUrl;
+    })();
+  </script>
+</body>
+</html>
